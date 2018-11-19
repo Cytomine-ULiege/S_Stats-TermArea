@@ -56,7 +56,7 @@ if (!runByUI) {
             value = idTerms
         else if (it.name == 'cytomine_id_images')
             value = idImages
-        else if (it.name == 'reviewed_only')
+        else if (it.name == 'cytomine_reviewed_only')
             value = reviewedOnly
 
         if (value)

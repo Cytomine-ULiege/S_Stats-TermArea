@@ -77,7 +77,7 @@
       "uri-sort-attribute": "instanceFilename"
     },
     {
-      "id": "reviewed_only",
+      "id": "cytomine_reviewed_only",
       "value-key": "[@ID]",
       "command-line-flag": "",
       "name": "Reviewed annotations only",
