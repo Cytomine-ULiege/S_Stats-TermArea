@@ -1,11 +1,11 @@
 {
   "name": "Stats-TermArea",
-  "description": "",
+  "description": "Compute area and statistics for specified terms in given images. Results are gathered in a CSV file.",
   "container-image": {
     "image": "cytomineuliege/s_stats-termarea",
     "type": "singularity"
   },
-  "command-line": "[CYTOMINE_HOST] [CYTOMINE_PUBLIC_KEY] [CYTOMINE_PRIVATE_KEY] [CYTOMINE_ID_PROJECT] [CYTOMINE_ID_SOFTWARE] [CYTOMINE_ID_TERMS] [CYTOMINE_ID_IMAGES]",
+  "command-line": "[CYTOMINE_HOST] [CYTOMINE_PUBLIC_KEY] [CYTOMINE_PRIVATE_KEY] [CYTOMINE_ID_PROJECT] [CYTOMINE_ID_SOFTWARE] [CYTOMINE_ID_TERMS] [CYTOMINE_ID_IMAGES] [REVIEWED_ONLY]",
   "inputs": [
     {
       "id": "cytomine_host",
@@ -75,6 +75,15 @@
       "uri": "/api/project/$currentProject$/imageinstance.json",
       "uri-print-attribute": "instanceFilename",
       "uri-sort-attribute": "instanceFilename"
+    },
+    {
+      "id": "reviewed_only",
+      "value-key": "[@ID]",
+      "command-line-flag": "",
+      "name": "Reviewed annotations only",
+      "description": "Only consider reviewed annotations in statistics",
+      "optional": false,
+      "type": "Boolean"
     }
   ],
 
