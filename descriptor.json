@@ -83,7 +83,8 @@
       "name": "Reviewed annotations only",
       "description": "Only consider reviewed annotations in statistics",
       "optional": false,
-      "type": "Boolean"
+      "type": "Boolean",
+      "default-value": false
     }
   ],
 
