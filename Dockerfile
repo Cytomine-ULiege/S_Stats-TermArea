@@ -11,8 +11,9 @@
 # * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # * See the License for the specific language governing permissions and
 # * limitations under the License.
-FROM cytomineuliege/software-groovy-base:v1.4.1
 
-ADD run.groovy .
+FROM cytomineuliege/software-groovy-base:v1.4.2
 
-ENTRYPOINT ["groovy", "-cp", "lib/cytomine-java-client.jar", "run.groovy"]
+ADD run.groovy /app/run.groovy
+
+ENTRYPOINT ["groovy", "-cp", "/lib/cytomine-java-client.jar", "/app/run.groovy"]
