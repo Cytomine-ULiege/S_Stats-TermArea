@@ -12,6 +12,7 @@
 # * See the License for the specific language governing permissions and
 # * limitations under the License.
 
+# Groovy is fixed to version 2.5 in this base.
 FROM cytomineuliege/software-groovy-base:v1.4.2
 
 ADD run.groovy /app/run.groovy
