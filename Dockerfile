@@ -1,4 +1,4 @@
-# * Copyright (c) 2009-2018. Authors: see NOTICE file.
+# * Copyright (c) 2009-2020. Authors: see NOTICE file.
 # *
 # * Licensed under the Apache License, Version 2.0 (the "License");
 # * you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # * See the License for the specific language governing permissions and
 # * limitations under the License.
 
-# Groovy is fixed to version 2.5 in this base.
-FROM cytomineuliege/software-groovy-base:v1.4.2
+# Groovy is fixed to version 2.4 in this base.
+FROM cytomine/software-groovy-2-4-base
 
 ADD run.groovy /app/run.groovy
 
