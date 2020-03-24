@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2009-2018. Authors: see NOTICE file.
+* Copyright (c) 2009-2020. Authors: see NOTICE file.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,25 +31,26 @@ Boolean reviewedOnly = Boolean.parseBoolean(args.length > 7 ? args[7] : 'false')
 
 
 // Establish connection with Cytomine server
-Cytomine cytomine = new Cytomine(host, publicKey, privateKey)
-def currentUser = cytomine.getCurrentUser()
+Cytomine.connection(host, publicKey, privateKey)
+
+User currentUser = User.getCurrent()
 def runByUI = false
-def job
-if (!currentUser.get("algo")) {
+Job job
+if (currentUser.isHuman()) {
     // If user connects as a human (CLI execution)
-    job = cytomine.addJob(idSoftware, idProject)
-    def userJob = cytomine.getUser(job.get("userJob"))
-    cytomine = new Cytomine(host, userJob.get("publicKey"), userJob.get("privateKey"))
+    job = new Job(idSoftware, idProject).save()
+    def userJob = new User().fetch(job.get("userJob"))
+    Cytomine.connection(host, userJob.get("publicKey"), userJob.get("privateKey"))
 }
 else {
     // If the user executes the job through the Cytomine interface
-    job = cytomine.getJob(currentUser.get("job"))
+    job = new Job().fetch(currentUser.get("job"))
     runByUI = true
 }
 
 // Publish parameters
 if (!runByUI) {
-    def softwareParameters = cytomine.getSoftware(idSoftware).get("parameters")
+    SoftwareParameterCollection softwareParameters = SoftwareParameterCollection.fetchBySoftware(idSoftware)
     softwareParameters.each({
         def value = null
         if (it.name == 'cytomine_id_terms')
@@ -60,19 +61,20 @@ if (!runByUI) {
             value = reviewedOnly
 
         if (value)
-            cytomine.addJobParameter(job.getId(), it.id, value.toString())
+            new JobParameter(job.getId(), it.id, value.toString()).save()
     })
 }
 
 try {
+    Cytomine cytomine = Cytomine.getInstance()
     // Start job
-    cytomine.changeStatus(job.getId(), Cytomine.JobStatus.RUNNING, 0, "Collect data")
+    job.changeStatus(Job.JobStatus.RUNNING, 0, "Collect data")
     def terms = idTerms.collect { id ->
-        return cytomine.getTerm(Long.parseLong(id))
+        return new Term().fetch(Long.parseLong(id))
     }
 
     def images = idImages.collect { id ->
-        return cytomine.getImageInstance(Long.parseLong(id))
+        return new ImageInstance().fetch(Long.parseLong(id))
     }
 
     def datas = []
@@ -98,15 +100,15 @@ try {
         }
     }
 
-    cytomine.changeStatus(job.getId(), Cytomine.JobStatus.RUNNING, 20, "Compute statistics")
+    job.changeStatus(Job.JobStatus.RUNNING, 20, "Compute statistics")
     def file = writeCSVReport(terms, images, datas)
 
-    cytomine.changeStatus(job.getId(), Cytomine.JobStatus.RUNNING, 90, "Upload report")
+    job.changeStatus(Job.JobStatus.RUNNING, 90, "Upload report")
     cytomine.uploadAttachedFile(file.toString(), "be.cytomine.processing.Job", job.getId())
-    cytomine.changeStatus(job.getId(), Cytomine.JobStatus.SUCCESS, 100, "Finished")
+    job.changeStatus(Job.JobStatus.SUCCESS, 100, "Finished")
 }
 catch(Exception e) {
-    cytomine.changeStatus(job.getId(), Cytomine.JobStatus.FAILED, "Error: ${e.toString()}")
+    job.changeStatus(Job.JobStatus.FAILED, 100, "Error: ${e.toString()}")
 }
 
 
