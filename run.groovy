@@ -104,7 +104,9 @@ try {
     def file = writeCSVReport(terms, images, datas)
 
     job.changeStatus(Job.JobStatus.RUNNING, 90, "Upload report")
-    cytomine.uploadAttachedFile(file.toString(), "be.cytomine.processing.Job", job.getId())
+    def jobData = new JobData(job, "output", "stats.csv").save()
+    jobData.uploadJobData(file)
+
     job.changeStatus(Job.JobStatus.SUCCESS, 100, "Finished")
 }
 catch(Exception e) {
