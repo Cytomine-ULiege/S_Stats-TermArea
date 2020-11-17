@@ -19,6 +19,28 @@ import be.cytomine.client.models.*
 import be.cytomine.client.collections.*
 import java.nio.file.Files
 
+public enum JobStatus{
+    NOTLAUNCH  (0),
+    INQUEUE  (1),
+    RUNNING  (2),
+    SUCCESS  (3),
+    FAILED (4),
+    INDETERMINATE  (5),
+    WAIT  (6),
+    PREVIEWED  (7),
+    KILLED (8);
+
+    private int valueOfJob;
+
+    JobStatus(int value){this.valueOfJob=value;}
+
+    public int getValue() {
+        return this.valueOfJob;
+    }
+
+}
+
+
 // Get command line parameters
 String host = args[0]
 String publicKey = args[1]
@@ -36,7 +58,7 @@ Cytomine.connection(host, publicKey, privateKey)
 User currentUser = User.getCurrent()
 def runByUI = false
 Job job
-if (currentUser.isHuman()) {
+if (!currentUser.get("algo")) {
     // If user connects as a human (CLI execution)
     job = new Job(idSoftware, idProject).save()
     def userJob = new User().fetch(job.get("userJob"))
@@ -50,7 +72,8 @@ else {
 
 // Publish parameters
 if (!runByUI) {
-    SoftwareParameterCollection softwareParameters = SoftwareParameterCollection.fetchBySoftware(idSoftware)
+    Software software = new Software().fetch(idSoftware)
+    def softwareParameters = software.get("parameters")
     softwareParameters.each({
         def value = null
         if (it.name == 'cytomine_id_terms')
@@ -68,7 +91,7 @@ if (!runByUI) {
 try {
     Cytomine cytomine = Cytomine.getInstance()
     // Start job
-    job.changeStatus(Job.JobStatus.RUNNING, 0, "Collect data")
+    job.changeStatus(job.getId(),JobStatus.RUNNING.getValue(), 0, "Collect data")
     def terms = idTerms.collect { id ->
         return new Term().fetch(Long.parseLong(id))
     }
@@ -100,17 +123,17 @@ try {
         }
     }
 
-    job.changeStatus(Job.JobStatus.RUNNING, 20, "Compute statistics")
+    job.changeStatus(job.getId(),JobStatus.RUNNING.getValue(), 20, "Compute statistics")
     def file = writeCSVReport(terms, images, datas)
 
-    job.changeStatus(Job.JobStatus.RUNNING, 90, "Upload report")
+    job.changeStatus(job.getId(),JobStatus.RUNNING.getValue(), 90, "Upload report")
     def jobData = new JobData(job, "output", "stats.csv").save()
     jobData.uploadJobData(file)
 
-    job.changeStatus(Job.JobStatus.SUCCESS, 100, "Finished")
+    job.changeStatus(job.getId(),JobStatus.SUCCESS.getValue(), 100, "Finished")
 }
 catch(Exception e) {
-    job.changeStatus(Job.JobStatus.FAILED, 100, "Error: ${e.toString()}")
+    job.changeStatus(job.getId(),JobStatus.FAILED.getValue(), 100, "Error: ${e.toString()}")
 }
 
 
