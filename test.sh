@@ -25,7 +25,7 @@ CYTOMINE_ID_SOFTWARE=$5
 CYTOMINE_ID_TERMS=$6
 CYTOMINE_ID_IMAGES=$7
 
-IMAGE="cytomine/s_stats-termarea"
+IMAGE="cytomineuliege/s_stats-termarea"
 
 ADD_HOST=""
 if [[ $CYTOMINE_HOST = *"localhost"* ]];

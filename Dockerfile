@@ -13,7 +13,7 @@
 # * limitations under the License.
 
 # Groovy is fixed to version 2.4 in this base.
-FROM cytomine/software-groovy-2-4-base:v2.1.0
+FROM cytomineuliege/software-groovy-base:v2.2.1
 
 ADD run.groovy /app/run.groovy
 

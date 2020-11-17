@@ -2,7 +2,7 @@
   "name": "Stats-TermArea",
   "description": "Compute area and statistics for specified terms in given images. Results are gathered in a CSV file.",
   "container-image": {
-    "image": "cytomine/s_stats-termarea",
+    "image": "cytomineuliege/s_stats-termarea",
     "type": "singularity"
   },
   "command-line": "[CYTOMINE_HOST] [CYTOMINE_PUBLIC_KEY] [CYTOMINE_PRIVATE_KEY] [CYTOMINE_ID_PROJECT] [CYTOMINE_ID_SOFTWARE] [CYTOMINE_ID_TERMS] [CYTOMINE_ID_IMAGES] [CYTOMINE_REVIEWED_ONLY]",
