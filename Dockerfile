@@ -12,9 +12,10 @@
 # * See the License for the specific language governing permissions and
 # * limitations under the License.
 
-# Groovy is fixed to version 2.4 in this base.
-FROM cytomineuliege/software-groovy-base:v2.2.1
+FROM cytomineuliege/software-python3-base:v2.7.0-py3.7.6
 
-ADD run.groovy /app/run.groovy
+RUN pip install numpy
 
-ENTRYPOINT ["groovy", "-cp", "/lib/cytomine-java-client.jar", "/app/run.groovy"]
+ADD run.py /app/run.py
+
+ENTRYPOINT ["python", "/app/run.py"]

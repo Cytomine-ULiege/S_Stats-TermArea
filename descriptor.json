@@ -10,7 +10,7 @@
     {
       "id": "cytomine_host",
       "value-key": "[@ID]",
-      "command-line-flag": "",
+      "command-line-flag": "--@id",
       "name": "Cytomine host",
       "set-by-server": true,
       "optional": false,
@@ -19,7 +19,7 @@
     {
       "id": "cytomine_public_key",
       "value-key": "[@ID]",
-      "command-line-flag": "",
+      "command-line-flag": "--@id",
       "name": "Cytomine public key",
       "set-by-server": true,
       "optional": false,
@@ -28,7 +28,7 @@
     {
       "id": "cytomine_private_key",
       "value-key": "[@ID]",
-      "command-line-flag": "",
+      "command-line-flag": "--@id",
       "name": "Cytomine private key",
       "set-by-server": true,
       "optional": false,
@@ -37,7 +37,7 @@
     {
       "id": "cytomine_id_project",
       "value-key": "[@ID]",
-      "command-line-flag": "",
+      "command-line-flag": "--@id",
       "name": "Cytomine project ID",
       "set-by-server": true,
       "optional": false,
@@ -46,7 +46,7 @@
     {
       "id": "cytomine_id_software",
       "value-key": "[@ID]",
-      "command-line-flag": "",
+      "command-line-flag": "--@id",
       "name": "Cytomine software ID",
       "set-by-server": true,
       "optional": false,
@@ -55,7 +55,7 @@
     {
       "id": "cytomine_id_terms",
       "value-key": "[@ID]",
-      "command-line-flag": "",
+      "command-line-flag": "--@id",
       "name": "Terms to analyze",
       "description": "The terms used in statistics computation",
       "optional": false,
@@ -67,7 +67,7 @@
     {
       "id": "cytomine_id_images",
       "value-key": "[@ID]",
-      "command-line-flag": "",
+      "command-line-flag": "--@id",
       "name": "Images to analyze",
       "description": "The images on which statistics are computed",
       "optional": false,
@@ -77,9 +77,33 @@
       "uri-sort-attribute": "instanceFilename"
     },
     {
+      "id": "cytomine_id_users",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Human users to analyze",
+      "description": "The users to consider for the annotations",
+      "optional": true,
+      "type": "ListDomain",
+      "uri": "/api/project/$currentProject$/user.json",
+      "uri-print-attribute": "username",
+      "uri-sort-attribute": "username"
+    },
+    {
+      "id": "cytomine_id_jobs",
+      "value-key": "[@ID]",
+      "command-line-flag": "--@id",
+      "name": "Jobs to analyze",
+      "description": "The jobs to consider for the annotations",
+      "optional": true,
+      "type": "ListDomain",
+      "uri": "/api/job.json?project=$currentProject$",
+      "uri-print-attribute": "created",
+      "uri-sort-attribute": "created"
+    },
+    {
       "id": "cytomine_reviewed_only",
       "value-key": "[@ID]",
-      "command-line-flag": "",
+      "command-line-flag": "--@id",
       "name": "Reviewed annotations only",
       "description": "Only consider reviewed annotations in statistics",
       "optional": false,

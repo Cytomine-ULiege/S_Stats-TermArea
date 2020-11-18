@@ -34,4 +34,12 @@ then
 fi
 
 docker build -t $IMAGE .
-docker run $ADD_HOST -it $IMAGE $CYTOMINE_HOST $CYTOMINE_PUBLIC_KEY $CYTOMINE_PRIVATE_KEY $CYTOMINE_ID_PROJECT $CYTOMINE_ID_SOFTWARE $CYTOMINE_ID_TERMS $CYTOMINE_ID_IMAGES
+docker run $ADD_HOST -it $IMAGE \
+--cytomine_host $CYTOMINE_HOST \
+--cytomine_public_key $CYTOMINE_PUBLIC_KEY \
+--cytomine_private_key $CYTOMINE_PRIVATE_KEY \
+--cytomine_id_project $CYTOMINE_ID_PROJECT \
+--cytomine_id_software $CYTOMINE_ID_SOFTWARE \
+--cytomine_id_terms $CYTOMINE_ID_TERMS \
+--cytomine_id_images $CYTOMINE_ID_IMAGES \
+--cytomine_reviewed_only false
